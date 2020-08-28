@@ -39,5 +39,4 @@ public class LoginPage {
         Logo.isDisplayed();
         return true;
     }
-
 }
