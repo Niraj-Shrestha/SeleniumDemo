@@ -10,8 +10,9 @@ import java.io.IOException;
 
 public class TakeScreenshot {
     public String screenshots(WebDriver driver) throws IOException {
+        TimeStamp time = new TimeStamp();
         File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-        File location = new File(System.getProperty("user.dir") + "/screenshots/" + "image" + ".png");
+        File location = new File(System.getProperty("user.dir") + "/screenshots/Image_" + time.timeStamp() + ".png");
         String destination = location.getAbsolutePath();
         FileUtils.copyFile(source, location);
         return destination;

@@ -1,27 +1,19 @@
 package Test;
 
+import Configuration.TimeStamp;
 import PageObjects.LoginPage;
 import Configuration.TakeScreenshot;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-
 
 public class MainTestFile {
 
@@ -38,14 +30,12 @@ public class MainTestFile {
 
     @BeforeTest
     public void setupReport(){
-        String Timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
-        report = new ExtentReports(System.getProperty("user.dir") + "/Reports/File_" + Timestamp +".html" );
+        TimeStamp time = new TimeStamp();
+        report = new ExtentReports(System.getProperty("user.dir") + "/Reports/File_" + time.timeStamp() +".html" );
 
         report.addSystemInfo("Username", "Niraj").addSystemInfo("Environment","QA");
-        report.loadConfig(new File(System.getProperty("user.dir") + "\\extent-config.xml"));
+        report.loadConfig(new File(System.getProperty("user.dir") + "/extent-config.xml"));
     }
-
-
 
     @BeforeTest
     public void startReport(){
@@ -59,15 +49,12 @@ public class MainTestFile {
         TakeScreenshot SS = new TakeScreenshot();
         //Test Name
         logger = report.startTest("Login using invalid email and password");
-        //Assert.assertFalse(login.verifyLogo(),true);
-        Assert.assertEquals(login.verifyLogo(),true);
 
         if(login.verifyLogo() == false){
             logger.log(LogStatus.PASS, "Logo Displayed");
         }else
         {
             logger.log(LogStatus.FAIL,logger.addScreenCapture(SS.screenshots(driver)));
-
         }
 
         login.setEmail("PositiveTest");
