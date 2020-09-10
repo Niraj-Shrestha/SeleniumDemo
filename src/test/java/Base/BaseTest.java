@@ -7,25 +7,67 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
-import java.io.File;
+import java.io.*;
+import java.util.Properties;
 
 public abstract class BaseTest {
 
+    public String BROWSER;
+    public String URL;
     public WebDriver driver;
     public ExtentReports report;
     public ExtentTest logger;
-    protected LoginPage loginPage;
-    protected SearchPeople searchPeople;
 
+    @BeforeSuite
+    public void setupResourceFile() throws IOException {
+        InputStream input = new FileInputStream(System.getProperty("user.dir")+ "/src/resources/config.properties" );
+        Properties props = new Properties();
+        props.load(input);
+        BROWSER = props.getProperty("testbrowser");
+        URL = props.getProperty("URL");
+
+    }
+
+
+    //Parameters("browser")
     @BeforeTest
     public void setup(){
-        System.setProperty("webdriver.chrome.driver","chromedriver");
-        driver = new ChromeDriver();
-        driver.get("https://www.facebook.com/");
+        /*if(browser.equalsIgnoreCase("chrome")){
+            System.setProperty("webdriver.chrome.driver","chromedriver");
+            driver = new ChromeDriver();
+        }
+        else if(browser.equalsIgnoreCase("firefox")){
+            System.setProperty("webdriver.gecko.driver","geckodriver");
+            driver= new FirefoxDriver();
+
+        }*/
+
+        switch (BROWSER){
+            case "chrome":
+                System.setProperty("webdriver.chrome.driver","drivers/chromedriver");
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("headless");
+                driver = new ChromeDriver(options);
+                break;
+            case "firefox":
+                System.setProperty("webdriver.gecko.driver","drivers/geckodriver");
+
+                driver= new FirefoxDriver();
+                break;
+
+            default:
+                System.out.println("No Driver found");
+
+        }
+        driver.get(URL);
     }
 
     @BeforeTest
@@ -50,12 +92,7 @@ public abstract class BaseTest {
     @AfterTest
     public void exit(){
         driver.close();
-        driver.quit();
     }
 
-   @BeforeTest
-    public void pages(){
-        loginPage = PageFactory.initElements(driver,LoginPage.class);
-        searchPeople = PageFactory.initElements(driver,SearchPeople.class);
-    }
+
 }

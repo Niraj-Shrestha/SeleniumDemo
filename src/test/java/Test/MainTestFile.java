@@ -2,11 +2,22 @@ package Test;
 
 import Base.BaseTest;
 import Configuration.TakeScreenshot;
+import PageObjects.LoginPage;
+import PageObjects.SearchPeople;
 import com.relevantcodes.extentreports.LogStatus;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import java.io.IOException;
 
 public class MainTestFile extends BaseTest{
+
+    LoginPage loginPage;
+
+    @BeforeTest
+    public void pages(){
+       loginPage = PageFactory.initElements(driver,LoginPage.class);
+    }
 
     @Test(priority = 1)
     public void validUsernameInvalidPassword() throws IOException {
@@ -31,7 +42,7 @@ public class MainTestFile extends BaseTest{
         logger.log(LogStatus.PASS,"Login Clicked");
     }
 
-    @Test(priority = 1)
+    /*@Test(priority = 1)
     public void invalidUsernameInvalidPassword() throws IOException {
         //LoginPage login = new LoginPage(driver);
         TakeScreenshot SS = new TakeScreenshot();
@@ -52,5 +63,5 @@ public class MainTestFile extends BaseTest{
         logger.log(LogStatus.PASS,"Password Entered");
         loginPage.setLogin();
         logger.log(LogStatus.PASS,"Login Clicked");
-    }
+    }*/
 }
