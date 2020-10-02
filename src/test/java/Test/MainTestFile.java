@@ -49,6 +49,7 @@ public class MainTestFile extends BaseTest{
         logger.log(LogStatus.PASS,"Password Entered");
         loginPage.setLogin();
         logger.log(LogStatus.PASS,"Login Clicked");
+        System.out.println("This sis test line");
     }
 
     /*@Test(priority = 1)

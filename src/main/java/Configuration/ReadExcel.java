@@ -14,6 +14,8 @@ public class ReadExcel {
 
     FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "/DataSheet.xlsx"));
 
+    //HSSFWorkbook only supports xls format
+    //XSSFWorkbook supports xls and xlsx format
     XSSFWorkbook workbook = new XSSFWorkbook(file);
 
     XSSFSheet sheet = workbook.getSheetAt(0);
